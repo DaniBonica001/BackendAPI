@@ -1,6 +1,6 @@
 import { admin } from "../Config/firebaseAdmin.js";
 
-const isLoggedIn = (req,res,next) => {
+const isAdmin = (req,res,next) => {
     const token = req.headers.authorization?.split(' ')[1]
     if (!token){
         return res.status(401).json({error: "Unauthorized"});
@@ -8,15 +8,15 @@ const isLoggedIn = (req,res,next) => {
 
     admin.auth()
         .verifyIdToken(token)
-        .then((decodedToken)=>{
-            console.log(decodedToken)
-            req.user = decodedToken;
-            next();
+        .then((claims)=>{
+            if (claims.admin === true){
+                next()
+            }
         })
         .catch((error) => {
-            console.error("Error verifying token: ", error);
+            console.error("Error verifying claims: ", error);
             return res.status(401).json({error: "Unauthorized"});
         });
 };
 
-export default isLoggedIn;
+export default isAdmin;

@@ -1,11 +1,14 @@
 import app from './app.js';
 import { port } from './Config/config.js';
-import { initializeFirebase } from './config/firebaseAdmin.js';
 import pg from "pg"
+import { initializeFirebaseAdmin } from './Config/firebaseAdmin.js'; 
 
 app.listen(port, () => {
     console.log(`Server running on port ${port}`);
-    initializeFirebase();
+    initializeFirebaseAdmin();
+    main()
+        .then(() => console.log("Connected to Postgres!"))
+        .catch(err => console.log("Error connecting to postgres!", err))
 });
 
 const pool = new pg.Pool({
@@ -27,6 +30,4 @@ async function main(){
     }
 }
 
-main()
-    .then(() => console.log("Connected to Postgres!"))
-    .catch(err => console.log("Error connecting to postgres!", err))
+
