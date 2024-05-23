@@ -20,7 +20,7 @@ export async function login(credentials) {
 
     try{
         const userCredential = await signInWithEmailAndPassword(getAuth(),email,password);
-        return userCredential.user;
+        return userCredential.user.stsTokenManager.accessToken;
 
     }catch(error){
         const errorCode = error.code;
@@ -29,6 +29,6 @@ export async function login(credentials) {
     }
 }
 
-export async function getProfile(userId) {
+export async function getProfile() {
     return "user";
 }
