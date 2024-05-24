@@ -1,0 +1,51 @@
+version: "3.4"
+
+networks:
+  dev:
+    driver: bridge
+
+services:
+
+  events-database:
+    build:
+      context: ../Database
+      dockerfile: Dockerfile
+    container_name: events-database
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=events
+    ports:
+      - "5433:5432"
+    networks:
+      - dev
+    volumes:
+      - app_data:/var/lib/postgresql/data
+
+  events-api:
+    build:
+      context: ../BackendAPI
+      dockerfile: Dockerfile
+    container_name: events-api
+    depends_on:
+      - events-database
+    networks:
+      - dev
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=3000
+      - POSTGRES_HOST=events-database
+      - POSTGRES_PORT=5432
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=events
+      - FIREBASE_API_KEY=AIzaSyDE3xDv7Sf0ZkxeMh7kN8s9A-HUnkHFVxM
+      - GMAIL_EMAIL=
+      - GMAIL_PASSWORD=
+ 
+
+volumes:
+  app_data:
