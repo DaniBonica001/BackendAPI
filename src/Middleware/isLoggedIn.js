@@ -9,7 +9,6 @@ const isLoggedIn = (req,res,next) => {
     admin.auth()
         .verifyIdToken(token)
         .then((decodedToken)=>{
-            console.log(decodedToken)
             req.user = decodedToken;
             next();
         })

@@ -11,7 +11,7 @@ app.listen(port, () => {
         .catch(err => console.log("Error connecting to postgres!", err))
 });
 
-const pool = new pg.Pool({
+export const pool = new pg.Pool({
     host:process.env.POSTGRES_HOST,
     port:process.env.POSTGRES_PORT,
     user:process.env.POSTGRES_USER,
@@ -29,5 +29,6 @@ async function main(){
         client.release();
     }
 }
+
 
 
