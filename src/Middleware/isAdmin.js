@@ -10,7 +10,10 @@ const isAdmin = (req,res,next) => {
         .verifyIdToken(token)
         .then((claims)=>{
             if (claims.admin === true){
-                next()
+                req.user = claims.uid;
+                next();
+            }else {
+                return res.status(401).json({ error: "Unauthorized" });
             }
         })
         .catch((error) => {

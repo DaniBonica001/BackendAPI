@@ -5,7 +5,7 @@ DROP TABLE IF EXISTS Customer;
 
 -- Create User table
 CREATE TABLE Customer (
-    id UUID PRIMARY KEY,
+    id TEXT PRIMARY KEY,
     name TEXT NOT NULL,
     phone TEXT NOT NULL,
     profile_image BYTEA
@@ -20,14 +20,14 @@ CREATE TABLE Event (
     event_time TIME NOT NULL,
     location TEXT NOT NULL,
     ticket_price NUMERIC(10, 2) NOT NULL,
-    customer_id UUID REFERENCES "User"(id)
+    customer_id TEXT REFERENCES Customer(id)
 );
 
 -- Create junction table to handle many-to-many relationship between users and events
 CREATE TABLE Event_Customer (
-    user_id UUID REFERENCES Customer(id) ON DELETE CASCADE,
+    customer_id TEXT REFERENCES Customer(id) ON DELETE CASCADE,
     event_id UUID REFERENCES Event(id) ON DELETE CASCADE,
-    PRIMARY KEY (user_id, event_id)
+    PRIMARY KEY (customer_id, event_id)
 );
 
 
@@ -39,15 +39,15 @@ VALUES
 
 
 -- Insert data into Event table
-INSERT INTO Event (title, description, event_date, event_time, location, ticket_price, user_id)
+INSERT INTO Event (title, description, event_date, event_time, location, ticket_price, customer_id)
 VALUES 
-    ('Music Concert', 'A live music concert featuring various artists.', '2023-07-15', '18:00', 'Central Park', 50.00, (SELECT id FROM "User" WHERE name = 'John Doe')),
-    ('Art Exhibition', 'An exhibition showcasing modern art.', '2023-08-20', '10:00', 'City Gallery', 20.00, (SELECT id FROM "User" WHERE name = 'Jane Smith'));
+    ('Music Concert', 'A live music concert featuring various artists.', '2013-07-15', '18:00', 'Central Park', 50.00, (SELECT id FROM Customer WHERE name = 'boris diaz')),
+    ('Art Exhibition', 'An exhibition showcasing modern art.', '2023-08-20', '10:00', 'City Gallery', 20.00, (SELECT id FROM Customer WHERE name = 'boris diaz'));
 
 
 -- Insert data into Event_User table to establish many-to-many relationships
-INSERT INTO Event_User (user_id, event_id)
+INSERT INTO Event_Customer (customer_id, event_id)
 VALUES 
-    ((SELECT id FROM Customer WHERE name = 'John Doe'), (SELECT id FROM Event WHERE title = 'Music Concert')),
-    ((SELECT id FROM Customer WHERE name = 'Jane Smith'), (SELECT id FROM Event WHERE title = 'Art Exhibition')),
+    ((SELECT id FROM Customer WHERE name = 'boris diaz'), (SELECT id FROM Event WHERE title = 'Music Concert')),
+    ((SELECT id FROM Customer WHERE name = 'boris diaz bonilla'), (SELECT id FROM Event WHERE title = 'Art Exhibition')),
     ((SELECT id FROM Customer WHERE name = 'Jane Smith'), (SELECT id FROM Event WHERE title = 'Music Concert'));

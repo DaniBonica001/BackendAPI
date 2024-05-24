@@ -29,7 +29,7 @@ export async function resetPassword(req, res, next) {
 
 export async function getProfile(req, res, next) {
     try {
-        const user = await userService.getProfile(req.user.uid);
+        const user = await userService.getProfile(req.user);
         res.status(200).json(user);
     } catch (error) {
         next(error);
@@ -38,7 +38,7 @@ export async function getProfile(req, res, next) {
 
 export async function updateProfile(req, res, next) {
     try {
-        const user = await userService.updateProfile(req.user.uid,req.body);
+        const user = await userService.updateProfile(req.user,req.body);
         res.status(200).json(user);
     } catch (error) {
         next(error);

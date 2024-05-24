@@ -31,6 +31,7 @@ export async function register(userData) {
         if (isAdmin) {
             await admin.auth().setCustomUserClaims(userCredential.uid, { admin: true });
         }
+        console.log(userCredential)
         await pool.query(
             'INSERT INTO customer(id, name, phone, profile_image) VALUES ($1, $2, $3, $4)',
             [userCredential.uid, name, phoneNumber, profile_picture]
