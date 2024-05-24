@@ -1,6 +1,7 @@
 import { pool } from '../server.js';
 import { v4 as uuidv4 } from 'uuid';
-import { admin } from "../Config/firebaseAdmin.js";
+import { transporter } from '../app.js';
+import { admin } from '../Config/firebaseAdmin.js';
 
 export async function createEvent(eventData, userId) {
     const { title, description, event_date, event_time, location, ticket_price } = eventData;
@@ -81,9 +82,23 @@ export async function purchaseTicket(eventId, userId) {
         if (rows.length === 0) {
             throw { status: 404, message: 'Event not found or not authorized to buy this event' };
         }
-        // Send confirmation email logic can be added here if needed
 
-        return;
+        // Send confirmation email logic
+        const mailData = {
+            from: process.env.GMAIL_EMAIL,  // sender address
+              to: await admin.auth().getUser(userId).email,   // list of receivers
+              subject: 'Confirmation Email for your purchase',
+              text: 'Thank you for your trust!',
+              html: '<b>Hey there! </b><br> This is is a confirmation email<br/>',
+        };
+
+        transporter.sendMail(mailData, function (err, info) {
+            if(err){
+                return err.message;
+            }
+         });
+
+        return "Mail send";
     } catch (error) {
         throw { status: 500, message: `Error purchasing ticket: ${error.message}` };
     }
@@ -102,7 +117,6 @@ export async function getTickets(userId) {
         throw { status: 500, message: `Error retrieving tickets: ${error.message}` };
     }
 }
-
 
 export async function getUsersEvents(userId) {
     console.log("servicio")
