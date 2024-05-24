@@ -37,7 +37,6 @@ export async function getAllEvents(req, res, next) {
 }
 
 export async function getEventDetails(req, res, next) {
-    console.log("controlador")
     try {
         const event = await eventService.getEventDetails(req.params.eventId);
         res.status(200).json(event);
@@ -57,7 +56,6 @@ export async function purchaseTicket(req, res, next) {
 
 export async function getTickets(req, res, next) {
     try {
-        console.log("controlador")
         const tickets = await eventService.getTickets(req.user);
         res.status(200).json(tickets);
     } catch (error) {
@@ -66,7 +64,6 @@ export async function getTickets(req, res, next) {
 }
 
 export async function getUsersEvents(req, res, next) {
-    console.log("controlador")
     try {
         const events = await eventService.getUsersEvents(req.user);
         res.status(200).json(events);

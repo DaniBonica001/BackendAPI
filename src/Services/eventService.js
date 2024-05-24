@@ -119,7 +119,6 @@ export async function getTickets(userId) {
 }
 
 export async function getUsersEvents(userId) {
-    console.log("servicio")
     const query = `
     SELECT e.*, 
         CASE 
