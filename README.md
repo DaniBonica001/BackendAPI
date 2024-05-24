@@ -47,7 +47,13 @@ This project is an Event Management System API built with Node.js and Express.js
 <img width="467" alt="image" src="https://github.com/DaniBonica001/BackendAPI/assets/72984897/a1b41796-ddd5-430f-a183-b833d3a11f23">
 
 ## Deployment
+In opting to dockerize the application, I aimed to streamline the deployment process and enhance portability across various environments. By encapsulating the application and its dependencies within Docker containers, we ensure consistency in development, testing, and production environments. Dockerization facilitates easier scaling, simplifies dependency management, and minimizes compatibility issues, ultimately fostering a more efficient and reliable deployment workflow.
+```bash
+cd Deploy/
+chmod +x deploy.sh
+./deploy.sh
+```
 
-### Running the Application with Docker
+
 
 
